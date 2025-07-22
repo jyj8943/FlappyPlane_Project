@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Obstacle : MonoBehaviour
 {
@@ -14,6 +16,13 @@ public class Obstacle : MonoBehaviour
     public Transform bottomObject;
 
     public float widthPadding = 4f;
+
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+    }
 
     public Vector3 SetRandomPlace(Vector3 lastPosition, int obstacleCount)
     {
@@ -29,5 +38,14 @@ public class Obstacle : MonoBehaviour
         transform.position = placePosition;
         
         return placePosition;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Player player = collision.GetComponent<Player>();
+        if (player != null)
+        {
+            gameManager.AddScore(1);
+        }
     }
 }

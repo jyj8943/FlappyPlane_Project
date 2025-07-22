@@ -8,7 +8,6 @@ using UnityEngine.SocialPlatforms.Impl;
 public class GameManager : MonoBehaviour
 {
     private static GameManager gameManager;
-
     public static GameManager Instance
     {
         get { return gameManager; }
@@ -16,14 +15,27 @@ public class GameManager : MonoBehaviour
 
     private int currentScore = 0;
 
+    private UIManager uiManager;
+    public UIManager UIManager
+    {
+        get { return uiManager; }
+    }
+
     private void Awake()
     {
         gameManager = this;
+        uiManager = FindObjectOfType<UIManager>();
+    }
+
+    private void Start()
+    {
+        uiManager.UpdateScore(0);
     }
 
     public void GameOver()
     {
         Debug.Log("Game Over!");
+        uiManager.SetRestart();
     }
 
     public void RestartGame()
@@ -35,5 +47,6 @@ public class GameManager : MonoBehaviour
     {
         currentScore += score;
         Debug.Log("Score: " + currentScore);
+        uiManager.UpdateScore(currentScore);
     }
 }
